@@ -1,3 +1,3 @@
 # Super Idol Jump
 
-Mô tả: Game nhảy qua màn, đến màn lấy được cờ sẽ chiến thắng
+Mô tả: Game nhảy qua màn, đến màn cuối lấy được cờ sẽ chiến thắng

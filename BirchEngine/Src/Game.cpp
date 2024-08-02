@@ -5,7 +5,7 @@
 
 #include "ECS/ECS.h"
 #include "ECS/Components.h"
-
+#include "Vector2D.h"
 
 
 ///*bien de render nhan vat*/
@@ -66,7 +66,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	//newPlayer.addComponent<PositionComponent>().setPos(500, 500);
 
 	/*#8*/
-	player.addComponent<PositionComponent>(100,500);
+	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("assets/Jump_king_32px.png");
 }
 
@@ -91,8 +91,13 @@ void Game::update()
 {
 	manager.refresh();
 	manager.update();
+
+	player.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
+
 	//cout << newPlayer.getComponent<PositionComponent>().x() << "," << newPlayer.getComponent<PositionComponent>().y() << endl;
-	if (player.getComponent<PositionComponent>().x() > 100)
+
+	/*neu toa do x >100 thi render thanh nhan vat khac*/
+	if (player.getComponent<TransformComponent>().position.x > 100)
 	{
 		player.getComponent<SpriteComponent>().setTex("assets/enemy_king_32px.png");
 	}
@@ -103,7 +108,11 @@ void Game::render()
 {
 	SDL_RenderClear(renderer);
 	/*render nhan vat o cot ben trai toa do (0,32)*/
+
+	/*render map*/
 	map->DrawMap();
+	
+	/*render nhan vat*/
 	manager.draw();
 	SDL_RenderPresent(renderer);
 }

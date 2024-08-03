@@ -7,7 +7,7 @@
 #include "ECS/Components.h"
 #include "Vector2D.h"
 #include "Collision.h"
-
+using namespace std;
 
 ///*bien de render nhan vat*/
 //SDL_Texture* playerTex;
@@ -21,12 +21,19 @@ Map* map;
 
 Manager manager;
 
+
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
+vector<ColliderComponent*> Game::colliders;
+
 
 auto& player(manager.addEntity());
-auto& wall(manager.addEntity());
+auto& wall(manager.addEntity()); /*tao 1 vat the wall*/
+
+auto& tile0(manager.addEntity());
+auto& tile1(manager.addEntity());
+auto& tile2(manager.addEntity());
 
 Game::Game()
 {}
@@ -70,13 +77,22 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	//newPlayer.addComponent<PositionComponent>();
 	//newPlayer.addComponent<PositionComponent>().setPos(500, 500);
 
+	/*13*/
+	tile0.addComponent<TileComponent>(200, 200, 32, 32, 0); /*water*/
+	tile1.addComponent<TileComponent>(250, 250, 32, 32, 1); /**/
+	tile1.addComponent<ColliderComponent>("dirt");
+	tile2.addComponent<TileComponent>(150,150,32,32,2);
+	tile2.addComponent<ColliderComponent>("grass");
+
 	/*#8*/
 	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("assets/Jump_king_32px.png");
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 
-	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
+	/*f,f,int,int,int = toa do x, toa do y, a,a, do rong */
+	//wall.addComponent<TransformComponent>(300.0f, 300.0f, 2, 20, 15);
+	wall.addComponent<TransformComponent>(300.0f, 300.0f, 50, 400, 1);
 	wall.addComponent<SpriteComponent>("assets/dirt.png");
 	wall.addComponent<ColliderComponent>("wall");
 }
@@ -103,11 +119,20 @@ void Game::update()
 	manager.refresh();
 	manager.update();
 
-	if (Collision::AABB(player.getComponent<ColliderComponent>().collider,wall.getComponent<ColliderComponent>().collider))
+	/*#13*/
+	for (auto cc : colliders)
 	{
-		player.getComponent<TransformComponent>().scale = 1;
-		cout << "Wall hit!" << endl;
+		Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
 	}
+
+
+	///*#11 xu ly va cham AABB*/
+	//if (Collision::AABB(player.getComponent<ColliderComponent>().collider,wall.getComponent<ColliderComponent>().collider))
+	//{
+	//	player.getComponent<TransformComponent>().scale = 1;
+	//	player.getComponent<TransformComponent>().velocity * -1;
+	//	cout << "Wall hit!" << endl;
+	//}
 	//cout << newPlayer.getComponent<PositionComponent>().x() << "," << newPlayer.getComponent<PositionComponent>().y() << endl;
 
 	/*#10 dieu khien keyboard*/
@@ -131,7 +156,7 @@ void Game::render()
 	/*render nhan vat o cot ben trai toa do (0,32)*/
 
 	/*render map*/
-	map->DrawMap();
+	//map->DrawMap();
 	
 	/*render nhan vat*/
 	manager.draw();

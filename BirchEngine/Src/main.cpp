@@ -13,7 +13,8 @@ int main(int argc, char *argv[])
 
 	/*khoi tao*/
 	game = new Game();
-	game->init("GameWindow", 800, 640, false);
+	/*width 600, height: 800 la perfect*/
+	game->init("Idol Jump", 800, 640, false);
 
 	/*cho game vao vong lap*/
 	while (game->running())
@@ -23,13 +24,15 @@ int main(int argc, char *argv[])
 		/*xu ly su kien*/
 		game->handleEvents();
 
-		/*update*/
+		/*update: cap nhat nhung thay doi trong game: nhan vat di chuyen, va cham,...*/
 		game->update();
+
+		/*render ra map, nhan vat*/
 		game->render();
 
+		/*tao cai delay nay de limit frame*/
 		frameTime = SDL_GetTicks() - frameStart;
 
-		/*tao cai delay nay de limit frame*/
 		if (frameDelay > frameTime)
 		{
 			SDL_Delay(frameDelay - frameTime);

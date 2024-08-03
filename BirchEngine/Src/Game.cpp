@@ -19,9 +19,12 @@
 Map* map;
 
 Manager manager;
-auto& player(manager.addEntity());
 
 SDL_Renderer* Game::renderer = nullptr;
+SDL_Event Game::event;
+
+
+auto& player(manager.addEntity());
 
 Game::Game()
 {}
@@ -68,11 +71,12 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	/*#8*/
 	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("assets/Jump_king_32px.png");
+	player.addComponent<KeyboardController>();
 }
 
 void Game::handleEvents()
 {
-	SDL_Event event;
+	//SDL_Event event;
 
 	SDL_PollEvent(&event);
 
@@ -92,15 +96,21 @@ void Game::update()
 	manager.refresh();
 	manager.update();
 
-	player.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
 
 	//cout << newPlayer.getComponent<PositionComponent>().x() << "," << newPlayer.getComponent<PositionComponent>().y() << endl;
 
-	/*neu toa do x >100 thi render thanh nhan vat khac*/
-	if (player.getComponent<TransformComponent>().position.x > 100)
-	{
-		player.getComponent<SpriteComponent>().setTex("assets/enemy_king_32px.png");
-	}
+	/*#10 dieu khien keyboard*/
+
+
+
+	///*#9 di chuyen nhan vat theo 2d*/
+	//player.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
+
+	///*neu toa do x >100 thi render thanh nhan vat khac*/
+	//if (player.getComponent<TransformComponent>().position.x > 100)
+	//{
+	//	player.getComponent<SpriteComponent>().setTex("assets/enemy_king_32px.png");
+	//}
 
 }
 

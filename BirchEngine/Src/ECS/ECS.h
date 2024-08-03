@@ -67,10 +67,7 @@ public:
 	bool isActive() const { return active; }
 	void destroy() { active = false; }
 
-	template <typename T> bool hasComponent() const
-	{
-		return componentBitSet[getComponentID<T>];
-	}
+
 
 	template <typename T, typename... TArgs>
 	T& addComponent(TArgs&&... mArgs)
@@ -85,6 +82,12 @@ public:
 
 		c->init();
 		return *c;
+	}
+
+	template <typename T> bool hasComponent() const
+	{
+		return componentBitSet[getComponentTypeID<T>()];
+		//return componentBitSet[getComponentID<T>];
 	}
 
 	template<typename T> T& getComponent() const

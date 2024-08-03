@@ -6,6 +6,7 @@
 #include "ECS/ECS.h"
 #include "ECS/Components.h"
 #include "Vector2D.h"
+#include "Collision.h"
 
 
 ///*bien de render nhan vat*/
@@ -25,6 +26,7 @@ SDL_Event Game::event;
 
 
 auto& player(manager.addEntity());
+auto& wall(manager.addEntity());
 
 Game::Game()
 {}
@@ -72,6 +74,11 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("assets/Jump_king_32px.png");
 	player.addComponent<KeyboardController>();
+	player.addComponent<ColliderComponent>("player");
+
+	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
+	wall.addComponent<SpriteComponent>("assets/dirt.png");
+	wall.addComponent<ColliderComponent>("wall");
 }
 
 void Game::handleEvents()
@@ -96,7 +103,11 @@ void Game::update()
 	manager.refresh();
 	manager.update();
 
-
+	if (Collision::AABB(player.getComponent<ColliderComponent>().collider,wall.getComponent<ColliderComponent>().collider))
+	{
+		player.getComponent<TransformComponent>().scale = 1;
+		cout << "Wall hit!" << endl;
+	}
 	//cout << newPlayer.getComponent<PositionComponent>().x() << "," << newPlayer.getComponent<PositionComponent>().y() << endl;
 
 	/*#10 dieu khien keyboard*/

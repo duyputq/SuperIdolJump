@@ -17,7 +17,7 @@ using namespace std;
 
 //GameObject* player;
 //GameObject* enemy;
-Map* map;
+Map* myMap;
 
 Manager manager;
 
@@ -79,7 +79,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	//player = new GameObject("assets/Jump_king_32px.png", 0, 0);
 	//enemy = new GameObject("assets/enemy_king_32px.png", 50, 50);
-	map = new Map();
+	myMap = new Map();
 
 	/*#7 them component */
 	//newPlayer.addComponent<PositionComponent>();
@@ -96,17 +96,17 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	/*#8*/
 	player.addComponent<TransformComponent>();
-	player.addComponent<SpriteComponent>("assets/Jump_king_32px.png");
+	player.addComponent<SpriteComponent>("assets/animate_jump_king.png",true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
-
+	
 	/*f,f,int,int,int = toa do x, toa do y, a,a, do rong */
-	wall.addComponent<TransformComponent>(300.0f, 300.0f, 2, 20, 15);
-	wall.addComponent<TransformComponent>(300.0f, 300.0f, 50, 400, 1);
-	wall.addComponent<SpriteComponent>("assets/dirt.png");
-	wall.addComponent<ColliderComponent>("wall");
-	wall.addGroup(groupMap);
+	//wall.addComponent<TransformComponent>(300.0f, 300.0f, 2, 20, 15);
+	//wall.addComponent<TransformComponent>(300.0f, 300.0f, 50, 400, 1);
+	//wall.addComponent<SpriteComponent>("assets/dirt.png");
+	//wall.addComponent<ColliderComponent>("wall");
+	//wall.addGroup(groupMap);
 }
 
 void Game::handleEvents()

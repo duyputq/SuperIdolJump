@@ -35,6 +35,7 @@ public:
 	void clean();
 
 /*bien su dung trong game.cpp*/
+	static void AddTile(int id, int x, int y);
 	static SDL_Renderer* renderer;
 	static SDL_Event event;
 	static vector<ColliderComponent*> colliders;

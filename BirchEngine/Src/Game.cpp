@@ -31,9 +31,17 @@ vector<ColliderComponent*> Game::colliders;
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity()); /*tao 1 vat the wall*/
 
-auto& tile0(manager.addEntity());
-auto& tile1(manager.addEntity());
-auto& tile2(manager.addEntity());
+enum groupLabels : size_t
+{
+	groupMap,
+	groupPlayers,
+	groupEnemies,
+	groupColliders
+};
+
+//auto& tile0(manager.addEntity());
+//auto& tile1(manager.addEntity());
+//auto& tile2(manager.addEntity());
 
 Game::Game()
 {}
@@ -56,7 +64,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
-			SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		}
 
 		isRunning = true;
@@ -77,24 +85,28 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	//newPlayer.addComponent<PositionComponent>();
 	//newPlayer.addComponent<PositionComponent>().setPos(500, 500);
 
-	/*13*/
-	tile0.addComponent<TileComponent>(200, 200, 32, 32, 0); /*water*/
-	tile1.addComponent<TileComponent>(250, 250, 32, 32, 1); /**/
-	tile1.addComponent<ColliderComponent>("dirt");
-	tile2.addComponent<TileComponent>(150,150,32,32,2);
-	tile2.addComponent<ColliderComponent>("grass");
+	/*13 tile component*/
+	//tile0.addComponent<TileComponent>(200, 200, 32, 32, 0); /*water*/
+	//tile1.addComponent<TileComponent>(250, 250, 32, 32, 1); /**/
+	//tile1.addComponent<ColliderComponent>("dirt");
+	//tile2.addComponent<TileComponent>(150,150,32,32,2);
+	//tile2.addComponent<ColliderComponent>("grass");
+
+	Map::LoadMap("assets/pyxel_32x32.txt", 16, 16);
 
 	/*#8*/
 	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("assets/Jump_king_32px.png");
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
+	player.addGroup(groupPlayers);
 
 	/*f,f,int,int,int = toa do x, toa do y, a,a, do rong */
-	//wall.addComponent<TransformComponent>(300.0f, 300.0f, 2, 20, 15);
+	wall.addComponent<TransformComponent>(300.0f, 300.0f, 2, 20, 15);
 	wall.addComponent<TransformComponent>(300.0f, 300.0f, 50, 400, 1);
 	wall.addComponent<SpriteComponent>("assets/dirt.png");
 	wall.addComponent<ColliderComponent>("wall");
+	wall.addGroup(groupMap);
 }
 
 void Game::handleEvents()
@@ -119,7 +131,7 @@ void Game::update()
 	manager.refresh();
 	manager.update();
 
-	/*#13*/
+	/*#13 cham vao vat the, thi se hien thi vat the do ra command line*/
 	for (auto cc : colliders)
 	{
 		Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
@@ -150,6 +162,10 @@ void Game::update()
 
 }
 
+auto& tiles(manager.getGroup(groupMap));
+auto& players(manager.getGroup(groupPlayers));
+auto& enemies(manager.getGroup(groupEnemies));
+
 void Game::render()
 {
 	SDL_RenderClear(renderer);
@@ -159,7 +175,20 @@ void Game::render()
 	//map->DrawMap();
 	
 	/*render nhan vat*/
-	manager.draw();
+	//manager.draw();
+	for (auto& t : tiles)
+	{
+		t->draw();
+	}
+	for (auto& p : players)
+	{
+		p->draw();
+	}
+	for (auto& e : enemies)
+	{
+		e->draw();
+	}
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -168,4 +197,11 @@ void Game::clean()
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
+}
+
+void Game::AddTile(int id, int x, int y)
+{
+	auto& tile(manager.addEntity());
+	tile.addComponent<TileComponent>(x, y, 32, 32, id);
+	tile.addGroup(groupMap);
 }

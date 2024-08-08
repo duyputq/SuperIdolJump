@@ -39,6 +39,9 @@
     <ClCompile Include="Src\ECS\ECS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\blank.md">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Game.h">
@@ -86,8 +89,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <None Include="assets\map.map" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\pyxel_32x32.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\terrain_ss.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

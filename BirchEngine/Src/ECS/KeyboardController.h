@@ -117,9 +117,11 @@ public:
 
 	Direction initialDirection = RIGHT;
 
+
 	void update() override {
 		transform->velocity.x = 0;
 		transform->velocity.y = 0;
+
 		bool isMoving = false;
 
 		if (keystates[SDL_SCANCODE_UP]) {
@@ -145,6 +147,13 @@ public:
 			sprite->Play("Walk");
 			isMoving = true;
 			initialDirection = RIGHT;
+		}
+
+
+		if (keystates[SDL_SCANCODE_SPACE]) {
+			//sprite->Play("Jump");
+			transform->velocity.y = -5; 
+			isMoving = true;
 		}
 
 		if (!isMoving) {

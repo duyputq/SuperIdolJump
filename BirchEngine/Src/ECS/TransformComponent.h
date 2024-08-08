@@ -17,7 +17,7 @@ public:
 	int width = 32;
 	int scale = 2;
 
-	int speed = 5;
+	int speed = 3;
 
 	//constuctor
 	TransformComponent()

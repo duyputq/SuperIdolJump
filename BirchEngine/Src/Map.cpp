@@ -1,6 +1,9 @@
 #include "Map.h"
 #include "Game.h"
 #include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
 
 //#include "TextureManager.h"
 //
@@ -49,6 +52,8 @@ Map::~Map()
 	//SDL_DestroyTexture(water);
 	//SDL_DestroyTexture(dirt);
 }
+
+/*
 void Map::LoadMap(string path, int sizeX, int sizeY)
 {
 	//for (int row = 0; row < 20; row++) 
@@ -58,16 +63,22 @@ void Map::LoadMap(string path, int sizeX, int sizeY)
 	//		map[row][column] = arr[row][column];
 	//	}
 	//}
-	char tile;
+	char c;
 	fstream mapFile;
 	mapFile.open(path);
+
+	int srcX, srcY;
 
 	for (int y = 0; y < sizeY; y++)
 	{
 		for (int x = 0; x < sizeX; x++)
 		{
-			mapFile.get(tile);
-			Game::AddTile(atoi(&tile), x * 32, y * 32);
+			mapFile.get(c);
+			srcX = atoi(&c) * 32;
+			mapFile.get(c);
+			srcY = atoi(&c) * 32;
+
+			Game::AddTile(srcX, srcY, x*32, y*32);
 			//Game::AddTile(atoi(&tile), x*16, y*16);
 			mapFile.ignore();
 		}
@@ -76,6 +87,40 @@ void Map::LoadMap(string path, int sizeX, int sizeY)
 	mapFile.close();
 
 }
+
+*/
+
+void Map::LoadMap(std::string path, int sizeX, int sizeY) {
+
+	std::ifstream mapFile(path);
+	std::string line;
+	std::vector<std::vector<int>> mapData;
+
+	while (std::getline(mapFile, line)) {
+		std::istringstream ss(line);
+		std::vector<int> row;
+		std::string value;
+
+		while (std::getline(ss, value, ',')) {
+			row.push_back(std::stoi(value));
+		}
+
+		mapData.push_back(row);
+	}
+
+	for (int y = 0; y < sizeY; ++y) {
+		for (int x = 0; x < sizeX; ++x) {
+			int tileCode = mapData[y][x];
+			int srcX = tileCode % 10;
+			int srcY = tileCode / 10;
+			Game::AddTile(srcX * 32, srcY * 32, x * 32, y * 32);
+		}
+	}
+}
+
+
+
+
 //
 //void Map::DrawMap()
 //{

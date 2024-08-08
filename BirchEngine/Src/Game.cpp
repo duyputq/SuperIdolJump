@@ -31,6 +31,8 @@ vector<ColliderComponent*> Game::colliders;
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity()); /*tao 1 vat the wall*/
 
+const char* mapfile = "assets/terrain_ss.png";
+
 enum groupLabels : size_t
 {
 	groupMap,
@@ -92,7 +94,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	//tile2.addComponent<TileComponent>(150,150,32,32,2);
 	//tile2.addComponent<ColliderComponent>("grass");
 
-	Map::LoadMap("assets/pyxel_32x32.txt", 16, 16);
+	Map::LoadMap("assets/map.map", 25, 20);
 
 	/*#8*/
 	player.addComponent<TransformComponent>();
@@ -199,9 +201,9 @@ void Game::clean()
 	SDL_Quit();
 }
 
-void Game::AddTile(int id, int x, int y)
+void Game::AddTile(int srcX, int srcY, int xpos, int ypos)
 {
 	auto& tile(manager.addEntity());
-	tile.addComponent<TileComponent>(x, y, 32, 32, id);
+	tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, mapfile);
 	tile.addGroup(groupMap);
 }

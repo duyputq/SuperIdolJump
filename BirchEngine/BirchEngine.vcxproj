@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Src\blank.md" />
     <ClCompile Include="Src\Collision.cpp" />
     <ClCompile Include="Src\ECS\ECS.cpp" />
     <ClCompile Include="Src\Game.cpp" />
@@ -177,10 +178,14 @@
     <ClInclude Include="Src\Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\map.map" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\pyxel_32x32.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\terrain_ss.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

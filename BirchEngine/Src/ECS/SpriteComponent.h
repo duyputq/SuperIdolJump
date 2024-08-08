@@ -37,8 +37,8 @@ public:
 	{
 		animated = true;
 
-		Animation idle = Animation(0, 3, 100);
-		Animation walk = Animation(1, 8, 100);
+		Animation idle = Animation(0, 3, 300);
+		Animation walk = Animation(1, 8, 200);
 
 		animations.emplace("Idle", idle);
 		animations.emplace("Walk", walk);

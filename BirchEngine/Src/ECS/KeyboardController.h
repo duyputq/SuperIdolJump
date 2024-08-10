@@ -137,7 +137,7 @@ public:
 			initialDirection = LEFT;
 		}
 		if (keystates[SDL_SCANCODE_DOWN]) {
-			transform->velocity.y = 1;
+			transform->velocity.y = 4;
 			sprite->Play("Walk");
 			isMoving = true;
 		}
@@ -152,7 +152,14 @@ public:
 
 		if (keystates[SDL_SCANCODE_SPACE]) {
 			//sprite->Play("Jump");
-			transform->velocity.y = -5; 
+			transform->velocity.y = -4; 
+
+			isMoving = true;
+		}
+		if (keystates[SDL_SCANCODE_HOME]) {
+			//sprite->Play("Jump");
+			transform->velocity.y = 3;
+
 			isMoving = true;
 		}
 

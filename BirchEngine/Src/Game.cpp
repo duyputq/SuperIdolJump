@@ -3,7 +3,7 @@
 //#include "GameObject.h"
 #include "Map.h"
 
-#include "ECS/ECS.h"
+//#include "ECS/ECS.h"
 #include "ECS/Components.h"
 #include "Vector2D.h"
 #include "Collision.h"
@@ -25,21 +25,16 @@ Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
-vector<ColliderComponent*> Game::colliders;
+//vector<ColliderComponent*> Game::colliders;
 
 
 auto& player(manager.addEntity());
-auto& wall(manager.addEntity()); /*tao 1 vat the wall*/
+auto& label(manager.addEntity());
+//auto& wall(manager.addEntity()); /*tao 1 vat the wall*/
 
-const char* mapfile = "assets/terrain_ss.png";
+//const char* mapfile = "assets/terrain_ss.png";
 
-enum groupLabels : size_t
-{
-	groupMap,
-	groupPlayers,
-	groupEnemies,
-	groupColliders
-};
+
 
 //auto& tile0(manager.addEntity());
 //auto& tile1(manager.addEntity());
@@ -81,7 +76,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	//player = new GameObject("assets/Jump_king_32px.png", 0, 0);
 	//enemy = new GameObject("assets/enemy_king_32px.png", 50, 50);
-	myMap = new Map();
+	//myMap = new Map("terrain", 3, 32);
 
 	/*#7 them component */
 	//newPlayer.addComponent<PositionComponent>();
@@ -94,11 +89,13 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	//tile2.addComponent<TileComponent>(150,150,32,32,2);
 	//tile2.addComponent<ColliderComponent>("grass");
 
-	Map::LoadMap("assets/map.map", 25, 20);
+	myMap = new Map("assets/terrain_ss.png", 1, 32);
+
+	myMap->LoadMap("assets/map.map", 25, 20);
 
 	/*#8*/
 	player.addComponent<TransformComponent>();
-	player.addComponent<SpriteComponent>("assets/animate_jump_king.png",true);
+	player.addComponent<SpriteComponent>("assets/animate_jump_king.png",true); /*them hoat anh chuyen dong buoc chan*/
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
@@ -110,6 +107,10 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	//wall.addComponent<ColliderComponent>("wall");
 	//wall.addGroup(groupMap);
 }
+
+auto& tiles(manager.getGroup(Game::groupMap));
+auto& players(manager.getGroup(Game::groupPlayers));
+auto& colliders(manager.getGroup(Game::groupColliders));
 
 void Game::handleEvents()
 {
@@ -130,14 +131,30 @@ void Game::handleEvents()
 /*sau se them ham draw map vao neu chuyen canh (update)*/
 void Game::update()
 {
+	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
+	Vector2D playerPos = player.getComponent<TransformComponent>().position;
+
 	manager.refresh();
 	manager.update();
 
 	/*#13 cham vao vat the, thi se hien thi vat the do ra command line*/
-	for (auto cc : colliders)
+	for (auto& c : colliders)
 	{
-		Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
+		//Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
+		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(cCol, playerCol))
+		{
+			player.getComponent<TransformComponent>().position = playerPos;
+			//player.getComponent<TransformComponent>().velocity * -1;
+
+		}
+
 	}
+
+
+
+
+
 
 
 	///*#11 xu ly va cham AABB*/
@@ -164,9 +181,11 @@ void Game::update()
 
 }
 
-auto& tiles(manager.getGroup(groupMap));
-auto& players(manager.getGroup(groupPlayers));
-auto& enemies(manager.getGroup(groupEnemies));
+
+
+//auto& tiles(manager.getGroup(Game::groupMap));
+//auto& players(manager.getGroup(Game::groupPlayers));
+//auto& enemies(manager.getGroup(Game::groupEnemies));
 
 void Game::render()
 {
@@ -182,14 +201,22 @@ void Game::render()
 	{
 		t->draw();
 	}
+
+	for (auto& c : colliders)
+	{
+		c->draw();
+	}
+
 	for (auto& p : players)
 	{
 		p->draw();
 	}
-	for (auto& e : enemies)
-	{
-		e->draw();
-	}
+
+	//label.draw();
+	//for (auto& e : enemies)
+	//{
+	//	e->draw();
+	//}
 
 	SDL_RenderPresent(renderer);
 }
@@ -201,9 +228,9 @@ void Game::clean()
 	SDL_Quit();
 }
 
-void Game::AddTile(int srcX, int srcY, int xpos, int ypos)
-{
-	auto& tile(manager.addEntity());
-	tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, mapfile);
-	tile.addGroup(groupMap);
-}
+//void Game::AddTile(int srcX, int srcY, int xpos, int ypos)
+//{
+//	//auto& tile(manager.addEntity());
+//	//tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, mapfile);
+//	//tile.addGroup(groupMap);
+//}

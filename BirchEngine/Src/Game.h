@@ -36,13 +36,21 @@ public:
 
 /*bien su dung trong game.cpp*/
 	//static void AddTile(int id, int x, int y);
-	static void AddTile(int srcX, int srcY, int xpos, int ypos);
+	//static void AddTile(int srcX, int srcY, int xpos, int ypos);
 	static SDL_Renderer* renderer;
 	static SDL_Event event;
-	static vector<ColliderComponent*> colliders;
+	//static vector<ColliderComponent*> colliders;
+	bool isRunning;
+
+	enum groupLabels : size_t
+	{
+		groupMap,
+		groupPlayers,
+		groupColliders
+		//groupEnemies,
+	};
 
 private:
-	bool isRunning = false;
 	int cnt = 0;
 	SDL_Window *window;
 	//SDL_Renderer *renderer;

@@ -37,6 +37,7 @@ public:
 	{
 		animated = true;
 
+		/*them cai nhay vao day, sua hang 2 la nhay, hang 3 la */
 		Animation idle = Animation(0, 3, 300);
 		Animation walk = Animation(1, 8, 200);
 

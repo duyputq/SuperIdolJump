@@ -29,6 +29,9 @@ public:
 		collider.h = collider.w = size;
 
 	}
+	~ColliderComponent() {
+
+	}
 
 	void init() override
 	{

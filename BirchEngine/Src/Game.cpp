@@ -95,7 +95,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	/*#8*/
 	player.addComponent<TransformComponent>();
-	player.addComponent<SpriteComponent>("assets/animate_jump_king.png",true); /*them hoat anh chuyen dong buoc chan*/
+	player.addComponent<SpriteComponent>("assets/animate_jump_king_full.png",true); /*them hoat anh chuyen dong buoc chan*/
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
@@ -129,13 +129,75 @@ void Game::handleEvents()
 }
 
 /*sau se them ham draw map vao neu chuyen canh (update)*/
+int mapNum = 1;
+
 void Game::update()
 {
 	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
 	Vector2D playerPos = player.getComponent<TransformComponent>().position;
 
+	Vector2D pVel = player.getComponent<TransformComponent>().velocity;
+	int pSpeed = player.getComponent<TransformComponent>().speed;
+
+
+
 	manager.refresh();
 	manager.update();
+
+	cout << "(" << playerPos.x << "," << playerPos.y << ")" << endl;
+
+
+	if (playerPos.y < 0) {
+		//myMap->LoadMap("assets/map.map", 25, 20);
+
+		if (mapNum == 2)
+		{
+			myMap->~Map();
+			colliders.clear();
+			myMap->LoadMap("assets/map3.map", 25, 20);
+			mapNum = 3;
+		}
+
+		if (mapNum == 1)
+		{
+			myMap->~Map();
+			colliders.clear();
+			myMap->LoadMap("assets/map2.map", 25, 20);
+			mapNum = 2;
+		}
+		playerPos.x = playerPos.x;
+		playerPos.y = 600 + playerPos.y;
+		player.getComponent<TransformComponent>().position = playerPos;
+
+	}
+
+	cout << mapNum << endl;
+
+	if (playerPos.y > 640) {
+		if (mapNum == 2) {
+			myMap->~Map();
+			colliders.clear();
+			myMap->LoadMap("assets/map.map", 25, 20);
+			mapNum = 1;
+		}
+
+		if (mapNum == 3) {
+			myMap->~Map();
+			colliders.clear();
+			myMap->LoadMap("assets/map2.map", 25, 20);
+			mapNum = 2;
+		}
+		playerPos.y = playerPos.y - 640;
+		player.getComponent<TransformComponent>().position = playerPos;
+
+	}
+
+
+	//for (auto t : tiles)
+	//{
+	//	t->getComponent<TileComponent>().destRect.x += (pVel.x);
+	//	t->getComponent<TileComponent>().destRect.y += (pVel.y);	
+	//}
 
 	/*#13 cham vao vat the, thi se hien thi vat the do ra command line*/
 	for (auto& c : colliders)
@@ -144,17 +206,12 @@ void Game::update()
 		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
 		if (Collision::AABB(cCol, playerCol))
 		{
+			cout << "collider hit!" << endl;
 			player.getComponent<TransformComponent>().position = playerPos;
 			//player.getComponent<TransformComponent>().velocity * -1;
 
 		}
-
 	}
-
-
-
-
-
 
 
 	///*#11 xu ly va cham AABB*/

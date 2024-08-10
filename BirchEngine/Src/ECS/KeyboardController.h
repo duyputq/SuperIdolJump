@@ -124,25 +124,27 @@ public:
 
 		bool isMoving = false;
 
+
+
 		if (keystates[SDL_SCANCODE_UP]) {
 			sprite->Play("Walk");
 			transform->velocity.y = -1;
 			isMoving = true;
 		}
 		if (keystates[SDL_SCANCODE_LEFT]) {
-			transform->velocity.x = -1;
+			transform->velocity.x = -1.5f;
 			sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
 			sprite->Play("Walk");
 			isMoving = true;
 			initialDirection = LEFT;
 		}
 		if (keystates[SDL_SCANCODE_DOWN]) {
-			transform->velocity.y = 4;
+			transform->velocity.y = 1;
 			sprite->Play("Walk");
 			isMoving = true;
 		}
 		if (keystates[SDL_SCANCODE_RIGHT]) {
-			transform->velocity.x = 1;
+			transform->velocity.x = 1.5f;
 			sprite->spriteFlip = SDL_FLIP_NONE;
 			sprite->Play("Walk");
 			isMoving = true;
@@ -150,20 +152,22 @@ public:
 		}
 
 
-		if (keystates[SDL_SCANCODE_SPACE]) {
-			//sprite->Play("Jump");
-			transform->velocity.y = -4; 
+		if (keystates[SDL_SCANCODE_SPACE] ) {
 
+			sprite->Play("Jump");
+			transform->velocity.y = -8;
+			transform->isJumping = true;
 			isMoving = true;
 		}
 		if (keystates[SDL_SCANCODE_HOME]) {
 			//sprite->Play("Jump");
-			transform->velocity.y = 3;
+			transform->velocity.y = 5;
 
 			isMoving = true;
 		}
 
 		if (!isMoving) {
+
 			sprite->Play("Idle");
 			if (initialDirection == RIGHT) {
 				sprite->spriteFlip = SDL_FLIP_NONE;
@@ -172,5 +176,7 @@ public:
 				sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
 			}
 		}
+
+
 	}
 };

@@ -15,9 +15,11 @@ public:
 
 	int height = 32;
 	int width = 32;
-	int scale = 1;
+	int scale = 2;
 
-	int speed = 3;
+	int speed = 1;
+	float gravity = 2.1f;
+	bool isJumping = false;
 
 	//constuctor
 	TransformComponent()
@@ -32,6 +34,9 @@ public:
 		//position.x = 0.0f;
 		//position.y = 0.0f;
 		position.Zero();
+		/*#19*/
+		//position.x = 400;
+		//position.y = 320;
 
 		scale = sc;
 	}
@@ -69,8 +74,22 @@ public:
 		//xpos++;
 		//ypos++;
 		/*#19 xoa dong nay*/
+		//position.x += velocity.x * speed;
+		//position.y += velocity.y * speed;
+
+		if (isJumping)
+		{
+			velocity.y += gravity;
+		}
 		position.x += velocity.x * speed;
 		position.y += velocity.y * speed;
+
+		if (position.y > 600)
+		{
+			position.y = 600;
+			velocity.y = 0;
+			isJumping = false;
+		}
 
 	}
 

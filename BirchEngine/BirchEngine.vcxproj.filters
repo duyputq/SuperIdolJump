@@ -90,6 +90,8 @@
   <ItemGroup>
     <None Include="README.md" />
     <None Include="assets\map.map" />
+    <None Include="assets\map2.map" />
+    <None Include="assets\map3.map" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\pyxel_32x32.txt" />

@@ -179,6 +179,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\map.map" />
+    <None Include="assets\map2.map" />
+    <None Include="assets\map3.map" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

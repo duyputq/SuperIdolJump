@@ -40,11 +40,13 @@ public:
 		/*them cai nhay vao day, sua hang 2 la nhay, hang 3 la */
 		Animation idle = Animation(0, 3, 300);
 		Animation walk = Animation(1, 8, 200);
-		Animation jump = Animation(2, 4, 400);
+		Animation jump = Animation(5, 1, 300);
+		Animation fall = Animation(4, 1, 400);
 
 		animations.emplace("Idle", idle);
 		animations.emplace("Walk", walk);
 		animations.emplace("Jump", jump);
+		animations.emplace("Fall", fall);
 
 
 		//frames = nFrames;

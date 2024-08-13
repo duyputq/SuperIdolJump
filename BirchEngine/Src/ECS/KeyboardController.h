@@ -8,107 +8,21 @@ class KeyboardController : public Component
 {
 public:
 	TransformComponent* transform;
+
 	SpriteComponent* sprite;
 	const Uint8* keystates = SDL_GetKeyboardState(NULL);
+	float gravity = 4.3f;
+	
+
+
+
 
 	void init() override
 	{
 		transform = &entity->getComponent<TransformComponent>();
 		sprite = &entity->getComponent<SpriteComponent>();
 	}
-	/*
-	void update() override
-	{
-		if (Game::event.type == SDL_KEYDOWN)
-		{
-			switch (Game::event.key.keysym.sym)
-			{
-			case SDLK_w:
-				transform->velocity.y = -1;
-				break;
-			case SDLK_a:
-				transform->velocity.x = -1;
-				break;
-			case SDLK_d:
-				transform->velocity.x = 1;
-				break;
-			case SDLK_s:
-				transform->velocity.y = 1;
-				break;
-			default:
-				break;
-			}
-		}
 
-		if (Game::event.type = SDL_KEYUP)
-		{
-			switch (Game::event.key.keysym.sym)
-			{
-			case SDLK_w:
-				transform->velocity.y = -1;
-				break;
-			case SDLK_a:
-				transform->velocity.x = -1;
-				break;
-			case SDLK_d:
-				transform->velocity.x = 1;
-				break;
-			case SDLK_s:
-				transform->velocity.y = 1;
-				break;
-			default:
-				break;
-			}
-		}
-	}
-	*/
-	//void update() override {
-	//	transform->velocity.x = 0;
-	//	transform->velocity.y = 0;
-
-	//	/*dieu khien bang mui ten*/
-	//	if (keystates[SDL_SCANCODE_UP]) {
-	//		sprite->Play("Walk");
-	//		transform->velocity.y = -1;
-	//	}
-	//	if (keystates[SDL_SCANCODE_LEFT]) {
-	//		transform->velocity.x = -1;
-	//		sprite->Play("Walk");
-
-	//	}
-	//	if (keystates[SDL_SCANCODE_DOWN]) {
-	//		transform->velocity.y = 1;
-	//		sprite->Play("Walk");
-
-	//	}
-	//	if (keystates[SDL_SCANCODE_RIGHT]) {
-	//		transform->velocity.x = 1;
-	//		sprite->Play("Walk");
-
-	//	}
-
-	//	//if (Game::event.type = SDL_KEYUP)
-	//	//{
-	//	//	switch (Game::event.key.keysym.sym)
-	//	//	{
-	//	//	case SDLK_w:
-	//	//		transform->velocity.y = -1;
-	//	//		break;
-	//	//	case SDLK_a:
-	//	//		transform->velocity.x = -1;
-	//	//		break;
-	//	//	case SDLK_d:
-	//	//		transform->velocity.x = 1;
-	//	//		break;
-	//	//	case SDLK_s:
-	//	//		transform->velocity.y = 1;
-	//	//		break;
-	//	//	default:
-	//	//		break;
-	//	//	}
-	//	//}
-
-	//}
 
 	enum Direction {
 		RIGHT,
@@ -118,49 +32,84 @@ public:
 	Direction initialDirection = RIGHT;
 
 
+
 	void update() override {
+
 		transform->velocity.x = 0;
 		transform->velocity.y = 0;
-
+		transform->isJumping = false;
 		bool isMoving = false;
 
-
-
+		//transform->isJumping = false;
 		if (keystates[SDL_SCANCODE_UP]) {
 			sprite->Play("Walk");
-			transform->velocity.y = -1;
+			transform->velocity.y = -2.5f;
 			isMoving = true;
 		}
 		if (keystates[SDL_SCANCODE_LEFT]) {
-			transform->velocity.x = -1.5f;
+			transform->velocity.x = -2.2f;
 			sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
-			sprite->Play("Walk");
+			//if (transform->isJumping != true)
+			//{
+			//	sprite->Play("Walk");
+			//}
 			isMoving = true;
 			initialDirection = LEFT;
 		}
 		if (keystates[SDL_SCANCODE_DOWN]) {
-			transform->velocity.y = 1;
+			transform->velocity.y = 2.5f;
 			sprite->Play("Walk");
 			isMoving = true;
 		}
+
 		if (keystates[SDL_SCANCODE_RIGHT]) {
-			transform->velocity.x = 1.5f;
+			transform->velocity.x = 2.2f;
 			sprite->spriteFlip = SDL_FLIP_NONE;
-			sprite->Play("Walk");
+			//if (transform->isJumping != true)
+			//{
+			//sprite->Play("Walk");
+			//}
 			isMoving = true;
 			initialDirection = RIGHT;
 		}
 
 
-		if (keystates[SDL_SCANCODE_SPACE] ) {
+		if(keystates[SDL_SCANCODE_SPACE]) {
+
+			//if (initialDirection == LEFT) {
+			//	transform->velocity.x = -3.5f;
+			//}
+
+			//if (initialDirection == RIGHT) {
+			//	transform->velocity.x = 3.5f;
+			//}
+
+			//float initX = transform->position.x;
+			//float initY = transform->position.y;
+			//transform->velocity.x = 0.5f;
+			//float currentX = initX + transform->velocity.x;
+			////-x^2 + 6x + 2
+			//transform->position.y =  (-(currentX * currentX) + 6 * currentX + 2);
+
+			////y = 
+
+			//transform->velocity.y = -8.0f;
+			transform->velocity.y = -12.0f;
+
+		
+			//transform->velocity.x = 2.0f;
 
 			sprite->Play("Jump");
-			transform->velocity.y = -8;
 			transform->isJumping = true;
+
 			isMoving = true;
 		}
+
+
+
 		if (keystates[SDL_SCANCODE_HOME]) {
 			//sprite->Play("Jump");
+
 			transform->velocity.y = 5;
 
 			isMoving = true;
@@ -176,6 +125,26 @@ public:
 				sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
 			}
 		}
+
+
+		if (transform->isAir)
+		{
+			transform->velocity.y += gravity;
+			if (!transform->isJumping ) {
+				sprite->Play("Fall");
+			}
+		}
+
+
+
+
+		if (transform->position.y > 600)
+		{
+			transform->position.y = 600;
+			transform->velocity.y = 0;
+			transform->isJumping = false;
+		}
+
 
 
 	}

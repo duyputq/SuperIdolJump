@@ -89,13 +89,13 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	//tile2.addComponent<TileComponent>(150,150,32,32,2);
 	//tile2.addComponent<ColliderComponent>("grass");
 
-	myMap = new Map("assets/terrain_ss.png", 1, 32);
+	myMap = new Map("assets/my_terrain_ss_v3.png", 1, 32);
 
 	myMap->LoadMap("assets/map.map", 25, 20);
 
 	/*#8*/
 	player.addComponent<TransformComponent>();
-	player.addComponent<SpriteComponent>("assets/animate_jump_king_full.png",true); /*them hoat anh chuyen dong buoc chan*/
+	player.addComponent<SpriteComponent>("assets/animate_jump_king_full3.png",true); /*them hoat anh chuyen dong buoc chan*/
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
@@ -130,6 +130,9 @@ void Game::handleEvents()
 
 /*sau se them ham draw map vao neu chuyen canh (update)*/
 int mapNum = 1;
+const Uint8* keystates = SDL_GetKeyboardState(NULL);
+
+
 
 void Game::update()
 {
@@ -189,7 +192,6 @@ void Game::update()
 		}
 		playerPos.y = playerPos.y - 640;
 		player.getComponent<TransformComponent>().position = playerPos;
-
 	}
 
 
@@ -200,41 +202,68 @@ void Game::update()
 	//}
 
 	/*#13 cham vao vat the, thi se hien thi vat the do ra command line*/
+
+
 	for (auto& c : colliders)
 	{
 		//Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
 		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+
 		if (Collision::AABB(cCol, playerCol))
 		{
+
 			cout << "collider hit!" << endl;
-			player.getComponent<TransformComponent>().position = playerPos;
 			//player.getComponent<TransformComponent>().velocity * -1;
+			cout << "playerCol.y la: " << playerCol.y << endl;
+			cout << "cCol.y la: " << cCol.y << endl;
+			cout << "playerCol.x la: " << playerCol.x << endl;
+			cout << "cCol.x la: " << cCol.x << endl;
+			//if ((playerCol.x + playerCol.w  < cCol.x + cCol.w  ) && !(playerCol.y < cCol.y)) {
+			//	cout << "trai sang" << endl;
+
+			//	playerPos.x = playerPos.x - 1;
+			//}
+
+			//if ((cCol.x + cCol.w  < playerCol.x + playerCol.w )&& !(playerCol.y < cCol.y)) {
+			//	cout << "phai sang" << endl;
+
+			//	playerPos.x = playerPos.x + 1;
+
+			//}
+
+
+			if (playerCol.y  > cCol.y) {
+				//playerPos.y = cCol.y - playerCol.h ;
+				playerPos.y = playerPos.y + 0.5f;
+				cout << "True" << endl;
+			}
+
+			if (playerCol.y < cCol.y) {
+				//playerPos.y = cCol.y - playerCol.h ;
+				player.getComponent<SpriteComponent>().Play("Idle");
+				playerPos.y = playerPos.y - 0.01f;
+				cout << "True" << endl;
+			}
+
+			if (keystates[SDL_SCANCODE_LEFT]) {
+				playerPos.x = playerPos.x - 1;
+				player.getComponent<SpriteComponent>().Play("Walk");
+
+			}
+			if (keystates[SDL_SCANCODE_RIGHT]) {
+				playerPos.x = playerPos.x + 1;
+				player.getComponent<SpriteComponent>().Play("Walk");
+			}
+			player.getComponent<TransformComponent>().position = playerPos;
+			player.getComponent<TransformComponent>().isAir = false;
 
 		}
+		player.getComponent<TransformComponent>().isAir = true;
+
 	}
 
 
-	///*#11 xu ly va cham AABB*/
-	//if (Collision::AABB(player.getComponent<ColliderComponent>().collider,wall.getComponent<ColliderComponent>().collider))
-	//{
-	//	player.getComponent<TransformComponent>().scale = 1;
-	//	player.getComponent<TransformComponent>().velocity * -1;
-	//	cout << "Wall hit!" << endl;
-	//}
-	//cout << newPlayer.getComponent<PositionComponent>().x() << "," << newPlayer.getComponent<PositionComponent>().y() << endl;
 
-	/*#10 dieu khien keyboard*/
-
-
-
-	///*#9 di chuyen nhan vat theo 2d*/
-	//player.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
-
-	///*neu toa do x >100 thi render thanh nhan vat khac*/
-	//if (player.getComponent<TransformComponent>().position.x > 100)
-	//{
-	//	player.getComponent<SpriteComponent>().setTex("assets/enemy_king_32px.png");
-	//}
 
 }
 

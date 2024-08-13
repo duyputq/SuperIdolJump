@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "Components.h"
 #include "../Vector2D.h"
 
@@ -9,17 +10,21 @@ private:
 	int xpos;
 	int ypos;
 
+
 public:
-	Vector2D position;
 	Vector2D velocity;
+	Vector2D position;
+	//float gravity = 4.3f;
+	bool isJumping = false;
+	bool isAir = true;
+
 
 	int height = 32;
 	int width = 32;
 	int scale = 2;
 
 	int speed = 1;
-	float gravity = 2.1f;
-	bool isJumping = false;
+
 
 	//constuctor
 	TransformComponent()
@@ -66,6 +71,7 @@ public:
 	{
 		//velocity.x = 0;
 		//velocity.y = 0;
+
 		velocity.Zero();
 	}
 
@@ -76,20 +82,10 @@ public:
 		/*#19 xoa dong nay*/
 		//position.x += velocity.x * speed;
 		//position.y += velocity.y * speed;
+		position.y += velocity.y;
+		position.x += velocity.x;
 
-		if (isJumping)
-		{
-			velocity.y += gravity;
-		}
-		position.x += velocity.x * speed;
-		position.y += velocity.y * speed;
 
-		if (position.y > 600)
-		{
-			position.y = 600;
-			velocity.y = 0;
-			isJumping = false;
-		}
 
 	}
 

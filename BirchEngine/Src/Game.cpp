@@ -46,6 +46,7 @@ Game::Game()
 Game::~Game()
 {}
 
+
 void Game::init(const char* title, int width, int height, bool fullscreen)
 {
 	int flags = 0;
@@ -65,7 +66,11 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		}
 
 		isRunning = true;
+		isLiving = true;
 	}
+
+
+
 	/*load hinh anh nhan vat*/
 	//SDL_Surface* tmpSurface = IMG_Load("assets/Jump_king.png");
 	//playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
@@ -95,7 +100,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	/*#8*/
 	player.addComponent<TransformComponent>();
-	player.addComponent<SpriteComponent>("assets/animate_jump_king_full3.png",true); /*them hoat anh chuyen dong buoc chan*/
+	player.addComponent<SpriteComponent>("assets/animate_jump_king_full3.png",true); /*them hoat anh chuyen dong*/
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
@@ -111,6 +116,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
+auto& spikes(manager.getGroup(Game::groupSpikes));
 
 void Game::handleEvents()
 {
@@ -142,10 +148,11 @@ void Game::update()
 	Vector2D pVel = player.getComponent<TransformComponent>().velocity;
 	int pSpeed = player.getComponent<TransformComponent>().speed;
 
+	if (isLiving == true) {
+		manager.refresh();
+		manager.update();
+	}
 
-
-	manager.refresh();
-	manager.update();
 
 	cout << "(" << playerPos.x << "," << playerPos.y << ")" << endl;
 
@@ -157,6 +164,7 @@ void Game::update()
 		{
 			myMap->~Map();
 			colliders.clear();
+			spikes.clear();
 			myMap->LoadMap("assets/map3.map", 25, 20);
 			mapNum = 3;
 		}
@@ -165,6 +173,7 @@ void Game::update()
 		{
 			myMap->~Map();
 			colliders.clear();
+			spikes.clear();
 			myMap->LoadMap("assets/map2.map", 25, 20);
 			mapNum = 2;
 		}
@@ -180,6 +189,7 @@ void Game::update()
 		if (mapNum == 2) {
 			myMap->~Map();
 			colliders.clear();
+			spikes.clear();
 			myMap->LoadMap("assets/map.map", 25, 20);
 			mapNum = 1;
 		}
@@ -187,6 +197,7 @@ void Game::update()
 		if (mapNum == 3) {
 			myMap->~Map();
 			colliders.clear();
+			spikes.clear();
 			myMap->LoadMap("assets/map2.map", 25, 20);
 			mapNum = 2;
 		}
@@ -261,10 +272,38 @@ void Game::update()
 		player.getComponent<TransformComponent>().isAir = true;
 
 	}
+	for (auto s : spikes) {
+		SDL_Rect cSpikes = s->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(cSpikes, playerCol)) {
+			cout << "spikes hit!" << endl;
+
+			player.getComponent<TransformComponent>().position = playerPos;
+			isLiving = false;
+			notification = true;
+
+			
 
 
 
+			if (keystates[SDL_SCANCODE_Q]) {
+				isRunning = false;
+				notification = false;
+			}
 
+			if (keystates[SDL_SCANCODE_R]) {
+				cout << "Press R";
+				isLiving = true;
+				notification = false;
+
+				playerPos.x = 50;
+				playerPos.y = 50;
+				player.getComponent<TransformComponent>().position = playerPos;
+			}
+
+
+
+		}
+	}
 }
 
 
@@ -293,9 +332,17 @@ void Game::render()
 		c->draw();
 	}
 
+	//for (auto& s : spikes)
+	//{
+	//	s->draw();
+	//}
+
 	for (auto& p : players)
 	{
 		p->draw();
+	}
+	if (notification == true) {
+		loadImage("assets/animate_jump_king_full3.png", renderer);
 	}
 
 	//label.draw();
@@ -320,3 +367,23 @@ void Game::clean()
 //	//tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, mapfile);
 //	//tile.addGroup(groupMap);
 //}
+
+void Game::loadImage(const std::string& path, SDL_Renderer* renderer) {
+	SDL_Surface* surface = IMG_Load(path.c_str());
+	if (!surface) {
+		std::cout << "Failed to load image: " << IMG_GetError() << std::endl;
+		return;
+	}
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_FreeSurface(surface);
+
+	if (!texture) {
+		std::cout << "Failed to create texture: " << SDL_GetError() << std::endl;
+		return;
+	}
+
+	SDL_Rect dstRect = { 300, 200, 300, 300 }; // Example position and size
+	SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+	SDL_DestroyTexture(texture);
+}

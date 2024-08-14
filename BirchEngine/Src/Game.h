@@ -29,10 +29,13 @@ public:
 	/*kiem tra running*/
 	bool running() { return isRunning; }
 
+
 	/*ham render ra nhan vat*/
 	void render();
 
 	void clean();
+
+	void loadImage(const string& path, SDL_Renderer* renderer);
 
 /*bien su dung trong game.cpp*/
 	//static void AddTile(int id, int x, int y);
@@ -41,12 +44,15 @@ public:
 	static SDL_Event event;
 	//static vector<ColliderComponent*> colliders;
 	bool isRunning;
+	bool isLiving;
+	bool notification;
 
 	enum groupLabels : size_t
 	{
 		groupMap,
 		groupPlayers,
-		groupColliders
+		groupColliders,
+		groupSpikes
 		//groupEnemies,
 	};
 

@@ -12,10 +12,6 @@ public:
 	SpriteComponent* sprite;
 	const Uint8* keystates = SDL_GetKeyboardState(NULL);
 	float gravity = 4.3f;
-	
-
-
-
 
 	void init() override
 	{
@@ -47,7 +43,7 @@ public:
 			isMoving = true;
 		}
 		if (keystates[SDL_SCANCODE_LEFT]) {
-			transform->velocity.x = -2.2f;
+			transform->velocity.x = -1.0f;
 			sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
 			//if (transform->isJumping != true)
 			//{
@@ -63,7 +59,7 @@ public:
 		}
 
 		if (keystates[SDL_SCANCODE_RIGHT]) {
-			transform->velocity.x = 2.2f;
+			transform->velocity.x = 1.0f;
 			sprite->spriteFlip = SDL_FLIP_NONE;
 			//if (transform->isJumping != true)
 			//{
@@ -94,9 +90,14 @@ public:
 			////y = 
 
 			//transform->velocity.y = -8.0f;
-			transform->velocity.y = -12.0f;
+			transform->velocity.y = -11.0f;
 
-		
+			if (keystates[SDL_SCANCODE_RIGHT]) {
+				transform->velocity.x = 3.0f;
+			}
+			if (keystates[SDL_SCANCODE_LEFT]) {
+				transform->velocity.x = -3.0f;
+			}
 			//transform->velocity.x = 2.0f;
 
 			sprite->Play("Jump");
@@ -104,8 +105,6 @@ public:
 
 			isMoving = true;
 		}
-
-
 
 		if (keystates[SDL_SCANCODE_HOME]) {
 			//sprite->Play("Jump");
@@ -138,12 +137,12 @@ public:
 
 
 
-		if (transform->position.y > 600)
-		{
-			transform->position.y = 600;
-			transform->velocity.y = 0;
-			transform->isJumping = false;
-		}
+		//if (transform->position.y > 600)
+		//{
+		//	transform->position.y = 600;
+		//	transform->velocity.y = 0;
+		//	transform->isJumping = false;
+		//}
 
 
 

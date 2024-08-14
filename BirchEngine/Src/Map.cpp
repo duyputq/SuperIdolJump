@@ -158,6 +158,13 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY) {
 				tcol.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
 				tcol.addGroup(Game::groupColliders);
 			}
+			if (c == '2')
+			{
+				cout << c << endl;
+				auto& spikes(manager.addEntity());
+				spikes.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
+				spikes.addGroup(Game::groupSpikes);
+			}
 			mapFile.ignore();
 		}
 	}

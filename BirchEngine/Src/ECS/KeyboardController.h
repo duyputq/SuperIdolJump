@@ -4,19 +4,23 @@
 #include "ECS.h"
 #include "Components.h"
 
+
 class KeyboardController : public Component
 {
 public:
 	TransformComponent* transform;
 
+
 	SpriteComponent* sprite;
 	const Uint8* keystates = SDL_GetKeyboardState(NULL);
 	float gravity = 4.3f;
+
 
 	void init() override
 	{
 		transform = &entity->getComponent<TransformComponent>();
 		sprite = &entity->getComponent<SpriteComponent>();
+	
 	}
 
 
@@ -27,6 +31,7 @@ public:
 
 	Direction initialDirection = RIGHT;
 
+	const float maxJumpHeight = 150.0f;
 
 
 	void update() override {
@@ -72,25 +77,8 @@ public:
 
 		if(keystates[SDL_SCANCODE_SPACE]) {
 
-			//if (initialDirection == LEFT) {
-			//	transform->velocity.x = -3.5f;
-			//}
-
-			//if (initialDirection == RIGHT) {
-			//	transform->velocity.x = 3.5f;
-			//}
-
-			//float initX = transform->position.x;
-			//float initY = transform->position.y;
-			//transform->velocity.x = 0.5f;
-			//float currentX = initX + transform->velocity.x;
-			////-x^2 + 6x + 2
-			//transform->position.y =  (-(currentX * currentX) + 6 * currentX + 2);
-
-			////y = 
-
-			//transform->velocity.y = -8.0f;
 			transform->velocity.y = -11.0f;
+
 
 			if (keystates[SDL_SCANCODE_RIGHT]) {
 				transform->velocity.x = 3.0f;
@@ -99,6 +87,7 @@ public:
 				transform->velocity.x = -3.0f;
 			}
 			//transform->velocity.x = 2.0f;
+			cout << SDL_GetTicks() << endl;
 
 			sprite->Play("Jump");
 			transform->isJumping = true;

@@ -17,6 +17,7 @@ public:
 	//float gravity = 4.3f;
 	bool isJumping = false;
 	bool isAir = true;
+	bool isMain = true;
 
 
 	int height = 32;
@@ -48,9 +49,9 @@ public:
 
 	TransformComponent(float x, float y)
 	{
-		//position.x = x;
-		//position.y = y;
-		position.Zero();
+		position.x = x;
+		position.y = y;
+		//position.Zero();
 
 	}
 
@@ -82,8 +83,10 @@ public:
 		/*#19 xoa dong nay*/
 		//position.x += velocity.x * speed;
 		//position.y += velocity.y * speed;
-		position.y += velocity.y;
-		position.x += velocity.x;
+		if (isMain) {
+			position.y += velocity.y;
+			position.x += velocity.x;
+		}
 
 
 

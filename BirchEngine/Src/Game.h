@@ -37,6 +37,8 @@ public:
 
 	void loadImage(const string& path, SDL_Renderer* renderer);
 
+
+
 /*bien su dung trong game.cpp*/
 	//static void AddTile(int id, int x, int y);
 	//static void AddTile(int srcX, int srcY, int xpos, int ypos);
@@ -45,14 +47,17 @@ public:
 	//static vector<ColliderComponent*> colliders;
 	bool isRunning;
 	bool isLiving;
-	bool notification;
+	bool noti_death;
+	bool noti_win;
+
 
 	enum groupLabels : size_t
 	{
 		groupMap,
 		groupPlayers,
 		groupColliders,
-		groupSpikes
+		groupSpikes,
+		groupPrincess
 		//groupEnemies,
 	};
 

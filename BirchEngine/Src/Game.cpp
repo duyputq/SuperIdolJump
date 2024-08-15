@@ -30,7 +30,8 @@ SDL_Event Game::event;
 
 auto& player(manager.addEntity());
 auto& label(manager.addEntity());
-//auto& wall(manager.addEntity()); /*tao 1 vat the wall*/
+auto& princess(manager.addEntity());
+auto& wall(manager.addEntity()); /*tao 1 vat the wall*/
 
 //const char* mapfile = "assets/terrain_ss.png";
 
@@ -104,19 +105,22 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
+
+	princess.addComponent<TransformComponent>(650,-480);
+	princess.addComponent<SpriteComponent>("assets/princess_sprite.png", true); /*them hoat anh chuyen dong*/
+	princess.addComponent<KeyboardController>();
+	princess.addComponent<ColliderComponent>("princess");
+	princess.addGroup(groupPrincess);
+
 	
 	/*f,f,int,int,int = toa do x, toa do y, a,a, do rong */
-	//wall.addComponent<TransformComponent>(300.0f, 300.0f, 2, 20, 15);
-	//wall.addComponent<TransformComponent>(300.0f, 300.0f, 50, 400, 1);
-	//wall.addComponent<SpriteComponent>("assets/dirt.png");
-	//wall.addComponent<ColliderComponent>("wall");
-	//wall.addGroup(groupMap);
 }
 
 auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
 auto& spikes(manager.getGroup(Game::groupSpikes));
+auto& princesses(manager.getGroup(Game::groupPrincess));
 
 void Game::handleEvents()
 {
@@ -144,27 +148,47 @@ void Game::update()
 {
 	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
 	Vector2D playerPos = player.getComponent<TransformComponent>().position;
-
-	Vector2D pVel = player.getComponent<TransformComponent>().velocity;
+	Vector2D princessPos = princess.getComponent<TransformComponent>().position;
+	//Vector2D pVel = player.getComponent<TransformComponent>().velocity;
 	int pSpeed = player.getComponent<TransformComponent>().speed;
 
 	if (isLiving == true) {
-		manager.refresh();
 		manager.update();
 	}
-
+	manager.refresh();
 
 	cout << "(" << playerPos.x << "," << playerPos.y << ")" << endl;
 
 
+	//SDL_Rect princessCol = princess.getComponent<ColliderComponent>().collider;
+	princess.addGroup(groupPrincess);
+
+	if (mapNum != 3) {
+		princesses.clear();
+	}
+
+
+	princess.getComponent<SpriteComponent>().Play("Idle");
+
 	if (playerPos.y < 0) {
 		//myMap->LoadMap("assets/map.map", 25, 20);
+
+		if (mapNum == 3)
+		{
+			myMap->~Map();
+			colliders.clear();
+			spikes.clear();
+
+			myMap->LoadMap("assets/map4.map", 25, 20);
+			mapNum = 4;
+		}
 
 		if (mapNum == 2)
 		{
 			myMap->~Map();
 			colliders.clear();
 			spikes.clear();
+
 			myMap->LoadMap("assets/map3.map", 25, 20);
 			mapNum = 3;
 		}
@@ -183,7 +207,7 @@ void Game::update()
 
 	}
 
-	cout << mapNum << endl;
+
 
 	if (playerPos.y > 640) {
 		if (mapNum == 2) {
@@ -214,6 +238,8 @@ void Game::update()
 
 	/*#13 cham vao vat the, thi se hien thi vat the do ra command line*/
 
+	princess.getComponent<TransformComponent>().isAir = false;
+	princess.getComponent<TransformComponent>().isMain = false;
 
 	for (auto& c : colliders)
 	{
@@ -222,13 +248,13 @@ void Game::update()
 
 		if (Collision::AABB(cCol, playerCol))
 		{
-
-			cout << "collider hit!" << endl;
 			//player.getComponent<TransformComponent>().velocity * -1;
-			cout << "playerCol.y la: " << playerCol.y << endl;
-			cout << "cCol.y la: " << cCol.y << endl;
-			cout << "playerCol.x la: " << playerCol.x << endl;
-			cout << "cCol.x la: " << cCol.x << endl;
+
+			//cout << "collider hit!" << endl;
+			//cout << "playerCol.y la: " << playerCol.y << endl;
+			//cout << "cCol.y la: " << cCol.y << endl;
+			//cout << "playerCol.x la: " << playerCol.x << endl;
+			//cout << "cCol.x la: " << cCol.x << endl;
 			//if ((playerCol.x + playerCol.w  < cCol.x + cCol.w  ) && !(playerCol.y < cCol.y)) {
 			//	cout << "trai sang" << endl;
 
@@ -242,18 +268,34 @@ void Game::update()
 
 			//}
 
+			//if (playerCol.x <= cCol.x) {
+			//	cout << "trai sang" << endl;
+			//	if (playerCol.y > cCol.y) {
+			//	playerPos.x = playerPos.x - 1;
+
+			//	}
+			//}
+			//else if (playerCol.x >= cCol.x) {
+			//	cout << "phai sang" << endl;
+			//	if (playerCol.y > cCol.y) {
+			//	playerPos.x = playerPos.x + 1;
+
+			//	}
+			//}
 
 			if (playerCol.y  > cCol.y) {
 				//playerPos.y = cCol.y - playerCol.h ;
+
 				playerPos.y = playerPos.y + 0.5f;
-				cout << "True" << endl;
+
 			}
 
 			if (playerCol.y < cCol.y) {
 				//playerPos.y = cCol.y - playerCol.h ;
+				cout << "tren xuong" << endl;
 				player.getComponent<SpriteComponent>().Play("Idle");
-				playerPos.y = playerPos.y - 0.01f;
-				cout << "True" << endl;
+				playerPos.y = playerPos.y - 0.001f;
+
 			}
 
 			if (keystates[SDL_SCANCODE_LEFT]) {
@@ -272,36 +314,95 @@ void Game::update()
 		player.getComponent<TransformComponent>().isAir = true;
 
 	}
-	for (auto s : spikes) {
+	for (auto& s : spikes) {
 		SDL_Rect cSpikes = s->getComponent<ColliderComponent>().collider;
 		if (Collision::AABB(cSpikes, playerCol)) {
-			cout << "spikes hit!" << endl;
+			//cout << "spikes hit!" << endl;
+
+
 
 			player.getComponent<TransformComponent>().position = playerPos;
 			isLiving = false;
-			notification = true;
-
-			
-
+			noti_death = true;
 
 
 			if (keystates[SDL_SCANCODE_Q]) {
 				isRunning = false;
-				notification = false;
+				noti_death = false;
 			}
 
 			if (keystates[SDL_SCANCODE_R]) {
 				cout << "Press R";
 				isLiving = true;
-				notification = false;
+				noti_death = false;
 
-				playerPos.x = 50;
-				playerPos.y = 50;
+				if (mapNum == 2) {
+					myMap->~Map();
+					colliders.clear();
+					spikes.clear();
+					myMap->LoadMap("assets/map.map", 25, 20);
+					mapNum = 1;
+				}
+
+				if (mapNum == 3) {
+					myMap->~Map();
+					colliders.clear();
+					spikes.clear();
+					myMap->LoadMap("assets/map.map", 25, 20);
+					mapNum = 1;
+				}
+
+				playerPos.x = 80;
+				playerPos.y = 450;
 				player.getComponent<TransformComponent>().position = playerPos;
 			}
 
 
 
+
+
+		}
+	}
+	for (auto& pr : princesses) {
+		SDL_Rect cPrincess = pr->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(playerCol,cPrincess)) {
+			cout << "CONG CHUA!" << endl;
+			player.getComponent<TransformComponent>().position = playerPos;
+			//isLiving = true;
+			noti_win = true;
+			player.getComponent<SpriteComponent>().Play("Walk");
+
+
+			if (keystates[SDL_SCANCODE_Q]) {
+				isRunning = false;
+				noti_win = false;
+			}
+
+			if (keystates[SDL_SCANCODE_R]) {
+				cout << "Press R";
+				isLiving = true;
+				noti_win = false;
+
+				if (mapNum == 2) {
+					myMap->~Map();
+					colliders.clear();
+					spikes.clear();
+					myMap->LoadMap("assets/map.map", 25, 20);
+					mapNum = 1;
+				}
+
+				if (mapNum == 3) {
+					myMap->~Map();
+					colliders.clear();
+					spikes.clear();
+					myMap->LoadMap("assets/map.map", 25, 20);
+					mapNum = 1;
+				}
+
+				playerPos.x = 80;
+				playerPos.y = 450;
+				player.getComponent<TransformComponent>().position = playerPos;
+			}
 		}
 	}
 }
@@ -337,12 +438,21 @@ void Game::render()
 	//	s->draw();
 	//}
 
+
 	for (auto& p : players)
 	{
 		p->draw();
 	}
-	if (notification == true) {
-		loadImage("assets/animate_jump_king_full3.png", renderer);
+
+	for (auto& pr : princesses) {
+		pr->draw();
+	}
+
+	if (noti_death == true) {
+		loadImage("assets/noti_death.png", renderer);
+	}
+	if (noti_win == true) {
+		loadImage("assets/noti_win.png", renderer);
 	}
 
 	//label.draw();
@@ -383,7 +493,7 @@ void Game::loadImage(const std::string& path, SDL_Renderer* renderer) {
 		return;
 	}
 
-	SDL_Rect dstRect = { 300, 200, 300, 300 }; // Example position and size
+	SDL_Rect dstRect = {175, 50, 450, 300 }; // Example position and size
 	SDL_RenderCopy(renderer, texture, NULL, &dstRect);
 	SDL_DestroyTexture(texture);
 }

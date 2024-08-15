@@ -92,12 +92,25 @@
     <None Include="assets\map.map" />
     <None Include="assets\map2.map" />
     <None Include="assets\map3.map" />
+    <None Include="assets\map4.map" />
+    <None Include="assets\map5.map" />
+    <None Include="assets\map6.map" />
+    <None Include="assets\map7.map" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\pyxel_32x32.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\terrain_ss.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\princess.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\princess_sprite.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\noti_death.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

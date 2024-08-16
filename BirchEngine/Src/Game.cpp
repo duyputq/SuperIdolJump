@@ -7,6 +7,7 @@
 #include "ECS/Components.h"
 #include "Vector2D.h"
 #include "Collision.h"
+
 using namespace std;
 
 ///*bien de render nhan vat*/
@@ -106,7 +107,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
 
-	princess.addComponent<TransformComponent>(650,-480);
+	princess.addComponent<TransformComponent>(665,-512);
 	princess.addComponent<SpriteComponent>("assets/princess_sprite.png", true); /*them hoat anh chuyen dong*/
 	princess.addComponent<KeyboardController>();
 	princess.addComponent<ColliderComponent>("princess");
@@ -163,15 +164,24 @@ void Game::update()
 	//SDL_Rect princessCol = princess.getComponent<ColliderComponent>().collider;
 	princess.addGroup(groupPrincess);
 
-	if (mapNum != 3) {
+	if (mapNum != 5) {
 		princesses.clear();
 	}
 
 
 	princess.getComponent<SpriteComponent>().Play("Idle");
 
-	if (playerPos.y < 0) {
+	if (playerPos.y < 0 && mapNum != 5) {
 		//myMap->LoadMap("assets/map.map", 25, 20);
+		if (mapNum == 4)
+		{
+			myMap->~Map();
+			colliders.clear();
+			spikes.clear();
+
+			myMap->LoadMap("assets/map5.map", 25, 20);
+			mapNum = 5;
+		}
 
 		if (mapNum == 3)
 		{
@@ -224,6 +234,22 @@ void Game::update()
 			spikes.clear();
 			myMap->LoadMap("assets/map2.map", 25, 20);
 			mapNum = 2;
+		}
+
+		if (mapNum == 4) {
+			myMap->~Map();
+			colliders.clear();
+			spikes.clear();
+			myMap->LoadMap("assets/map3.map", 25, 20);
+			mapNum = 3;
+		}
+
+		if (mapNum == 5) {
+			myMap->~Map();
+			colliders.clear();
+			spikes.clear();
+			myMap->LoadMap("assets/map4.map", 25, 20);
+			mapNum = 4;
 		}
 		playerPos.y = playerPos.y - 640;
 		player.getComponent<TransformComponent>().position = playerPos;
@@ -292,7 +318,6 @@ void Game::update()
 
 			if (playerCol.y < cCol.y) {
 				//playerPos.y = cCol.y - playerCol.h ;
-				cout << "tren xuong" << endl;
 				player.getComponent<SpriteComponent>().Play("Idle");
 				playerPos.y = playerPos.y - 0.001f;
 
@@ -351,6 +376,24 @@ void Game::update()
 					myMap->LoadMap("assets/map.map", 25, 20);
 					mapNum = 1;
 				}
+				if (mapNum == 4)
+				{
+					myMap->~Map();
+					colliders.clear();
+					spikes.clear();
+
+					myMap->LoadMap("assets/map.map", 25, 20);
+					mapNum = 1;
+				}
+				if (mapNum == 5)
+				{
+					myMap->~Map();
+					colliders.clear();
+					spikes.clear();
+
+					myMap->LoadMap("assets/map.map", 25, 20);
+					mapNum = 1;
+				}
 
 				playerPos.x = 80;
 				playerPos.y = 450;
@@ -383,6 +426,8 @@ void Game::update()
 				isLiving = true;
 				noti_win = false;
 
+
+
 				if (mapNum == 2) {
 					myMap->~Map();
 					colliders.clear();
@@ -395,6 +440,24 @@ void Game::update()
 					myMap->~Map();
 					colliders.clear();
 					spikes.clear();
+					myMap->LoadMap("assets/map.map", 25, 20);
+					mapNum = 1;
+				}
+				if (mapNum == 4)
+				{
+					myMap->~Map();
+					colliders.clear();
+					spikes.clear();
+
+					myMap->LoadMap("assets/map.map", 25, 20);
+					mapNum = 1;
+				}
+				if (mapNum == 5)
+				{
+					myMap->~Map();
+					colliders.clear();
+					spikes.clear();
+
 					myMap->LoadMap("assets/map.map", 25, 20);
 					mapNum = 1;
 				}

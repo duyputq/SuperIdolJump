@@ -183,8 +183,6 @@
     <None Include="assets\map3.map" />
     <None Include="assets\map4.map" />
     <None Include="assets\map5.map" />
-    <None Include="assets\map6.map" />
-    <None Include="assets\map7.map" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

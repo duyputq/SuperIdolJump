@@ -48,12 +48,9 @@ public:
 			isMoving = true;
 		}
 		if (keystates[SDL_SCANCODE_LEFT]) {
-			transform->velocity.x = -1.0f;
 			sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
-			//if (transform->isJumping != true)
-			//{
-			//	sprite->Play("Walk");
-			//}
+
+			transform->velocity.x = -3.0f;
 			isMoving = true;
 			initialDirection = LEFT;
 		}
@@ -64,12 +61,10 @@ public:
 		}
 
 		if (keystates[SDL_SCANCODE_RIGHT]) {
-			transform->velocity.x = 1.0f;
 			sprite->spriteFlip = SDL_FLIP_NONE;
-			//if (transform->isJumping != true)
-			//{
-			//sprite->Play("Walk");
-			//}
+
+			transform->velocity.x = 3.0f;
+
 			isMoving = true;
 			initialDirection = RIGHT;
 		}
@@ -87,7 +82,7 @@ public:
 				transform->velocity.x = -3.0f;
 			}
 			//transform->velocity.x = 2.0f;
-			cout << SDL_GetTicks() << endl;
+
 
 			sprite->Play("Jump");
 			transform->isJumping = true;

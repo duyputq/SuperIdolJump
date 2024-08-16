@@ -1,46 +1,23 @@
 #include "Game.h"
 #include "TextureManager.h"
-//#include "GameObject.h"
 #include "Map.h"
-
-//#include "ECS/ECS.h"
 #include "ECS/Components.h"
 #include "Vector2D.h"
 #include "Collision.h"
 
 using namespace std;
 
-///*bien de render nhan vat*/
-//SDL_Texture* playerTex;
-//
-///*Hinh chu nhat, dung de handle vi tri dat nhan vat*/
-//SDL_Rect srcR, destR;
 
-//GameObject* player;
-//GameObject* enemy;
+
 Map* myMap;
-
 Manager manager;
-
-
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
-//vector<ColliderComponent*> Game::colliders;
-
 
 auto& player(manager.addEntity());
-auto& label(manager.addEntity());
 auto& princess(manager.addEntity());
-auto& wall(manager.addEntity()); /*tao 1 vat the wall*/
 
-//const char* mapfile = "assets/terrain_ss.png";
-
-
-
-//auto& tile0(manager.addEntity());
-//auto& tile1(manager.addEntity());
-//auto& tile2(manager.addEntity());
 
 Game::Game()
 {}
@@ -71,30 +48,6 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		isLiving = true;
 	}
 
-
-
-	/*load hinh anh nhan vat*/
-	//SDL_Surface* tmpSurface = IMG_Load("assets/Jump_king.png");
-	//playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	//SDL_FreeSurface(tmpSurface); /*ko can nua */
-
-	//#4 bo, thay vao do dung file GameObject de render nhan vat 
-	//playerTex = TextureManager::LoadTexture("assets/Jump_king.png", renderer);
-
-	//player = new GameObject("assets/Jump_king_32px.png", 0, 0);
-	//enemy = new GameObject("assets/enemy_king_32px.png", 50, 50);
-	//myMap = new Map("terrain", 3, 32);
-
-	/*#7 them component */
-	//newPlayer.addComponent<PositionComponent>();
-	//newPlayer.addComponent<PositionComponent>().setPos(500, 500);
-
-	/*13 tile component*/
-	//tile0.addComponent<TileComponent>(200, 200, 32, 32, 0); /*water*/
-	//tile1.addComponent<TileComponent>(250, 250, 32, 32, 1); /**/
-	//tile1.addComponent<ColliderComponent>("dirt");
-	//tile2.addComponent<TileComponent>(150,150,32,32,2);
-	//tile2.addComponent<ColliderComponent>("grass");
 
 	myMap = new Map("assets/my_terrain_ss_v3.png", 1, 32);
 
@@ -256,13 +209,7 @@ void Game::update()
 	}
 
 
-	//for (auto t : tiles)
-	//{
-	//	t->getComponent<TileComponent>().destRect.x += (pVel.x);
-	//	t->getComponent<TileComponent>().destRect.y += (pVel.y);	
-	//}
-
-	/*#13 cham vao vat the, thi se hien thi vat the do ra command line*/
+	/*cham vao vat the, thi se hien thi vat the do ra command line*/
 
 	princess.getComponent<TransformComponent>().isAir = false;
 	princess.getComponent<TransformComponent>().isMain = false;
@@ -274,40 +221,7 @@ void Game::update()
 
 		if (Collision::AABB(cCol, playerCol))
 		{
-			//player.getComponent<TransformComponent>().velocity * -1;
 
-			//cout << "collider hit!" << endl;
-			//cout << "playerCol.y la: " << playerCol.y << endl;
-			//cout << "cCol.y la: " << cCol.y << endl;
-			//cout << "playerCol.x la: " << playerCol.x << endl;
-			//cout << "cCol.x la: " << cCol.x << endl;
-			//if ((playerCol.x + playerCol.w  < cCol.x + cCol.w  ) && !(playerCol.y < cCol.y)) {
-			//	cout << "trai sang" << endl;
-
-			//	playerPos.x = playerPos.x - 1;
-			//}
-
-			//if ((cCol.x + cCol.w  < playerCol.x + playerCol.w )&& !(playerCol.y < cCol.y)) {
-			//	cout << "phai sang" << endl;
-
-			//	playerPos.x = playerPos.x + 1;
-
-			//}
-
-			//if (playerCol.x <= cCol.x) {
-			//	cout << "trai sang" << endl;
-			//	if (playerCol.y > cCol.y) {
-			//	playerPos.x = playerPos.x - 1;
-
-			//	}
-			//}
-			//else if (playerCol.x >= cCol.x) {
-			//	cout << "phai sang" << endl;
-			//	if (playerCol.y > cCol.y) {
-			//	playerPos.x = playerPos.x + 1;
-
-			//	}
-			//}
 
 			if (playerCol.y  > cCol.y) {
 				//playerPos.y = cCol.y - playerCol.h ;
@@ -346,8 +260,8 @@ void Game::update()
 
 
 
-			player.getComponent<TransformComponent>().position = playerPos;
 			isLiving = false;
+			player.getComponent<TransformComponent>().position = playerPos;
 			noti_death = true;
 
 
@@ -399,11 +313,6 @@ void Game::update()
 				playerPos.y = 450;
 				player.getComponent<TransformComponent>().position = playerPos;
 			}
-
-
-
-
-
 		}
 	}
 	for (auto& pr : princesses) {
@@ -425,9 +334,6 @@ void Game::update()
 				cout << "Press R";
 				isLiving = true;
 				noti_win = false;
-
-
-
 				if (mapNum == 2) {
 					myMap->~Map();
 					colliders.clear();
@@ -470,22 +376,10 @@ void Game::update()
 	}
 }
 
-
-
-//auto& tiles(manager.getGroup(Game::groupMap));
-//auto& players(manager.getGroup(Game::groupPlayers));
-//auto& enemies(manager.getGroup(Game::groupEnemies));
-
 void Game::render()
 {
 	SDL_RenderClear(renderer);
-	/*render nhan vat o cot ben trai toa do (0,32)*/
 
-	/*render map*/
-	//map->DrawMap();
-	
-	/*render nhan vat*/
-	//manager.draw();
 	for (auto& t : tiles)
 	{
 		t->draw();
@@ -495,11 +389,6 @@ void Game::render()
 	{
 		c->draw();
 	}
-
-	//for (auto& s : spikes)
-	//{
-	//	s->draw();
-	//}
 
 
 	for (auto& p : players)
@@ -518,12 +407,6 @@ void Game::render()
 		loadImage("assets/noti_win.png", renderer);
 	}
 
-	//label.draw();
-	//for (auto& e : enemies)
-	//{
-	//	e->draw();
-	//}
-
 	SDL_RenderPresent(renderer);
 }
 
@@ -534,12 +417,6 @@ void Game::clean()
 	SDL_Quit();
 }
 
-//void Game::AddTile(int srcX, int srcY, int xpos, int ypos)
-//{
-//	//auto& tile(manager.addEntity());
-//	//tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, mapfile);
-//	//tile.addGroup(groupMap);
-//}
 
 void Game::loadImage(const std::string& path, SDL_Renderer* renderer) {
 	SDL_Surface* surface = IMG_Load(path.c_str());

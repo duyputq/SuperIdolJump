@@ -10,11 +10,9 @@ class KeyboardController : public Component
 public:
 	TransformComponent* transform;
 
-
 	SpriteComponent* sprite;
 	const Uint8* keystates = SDL_GetKeyboardState(NULL);
 	float gravity = 4.3f;
-
 
 	void init() override
 	{
@@ -22,7 +20,6 @@ public:
 		sprite = &entity->getComponent<SpriteComponent>();
 	
 	}
-
 
 	enum Direction {
 		RIGHT,
@@ -90,13 +87,6 @@ public:
 			isMoving = true;
 		}
 
-		if (keystates[SDL_SCANCODE_HOME]) {
-			//sprite->Play("Jump");
-
-			transform->velocity.y = 5;
-
-			isMoving = true;
-		}
 
 		if (!isMoving) {
 
@@ -117,18 +107,6 @@ public:
 				sprite->Play("Fall");
 			}
 		}
-
-
-
-
-		//if (transform->position.y > 600)
-		//{
-		//	transform->position.y = 600;
-		//	transform->velocity.y = 0;
-		//	transform->isJumping = false;
-		//}
-
-
 
 	}
 };

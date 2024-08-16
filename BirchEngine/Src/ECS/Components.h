@@ -5,5 +5,5 @@
 #include "KeyboardController.h"
 #include "ColliderComponent.h"
 #include "TileComponent.h"
-/*file nay dung de set vi tri cho component (nhan vat)*/
+
 

@@ -30,19 +30,14 @@ public:
 	//constuctor
 	TransformComponent()
 	{
-		//position.x = 0.0f;
-		//position.y = 0.0f;
 		position.Zero();
 	}
 
 	TransformComponent(int sc)
 	{
-		//position.x = 0.0f;
-		//position.y = 0.0f;
+
 		position.Zero();
-		/*#19*/
-		//position.x = 400;
-		//position.y = 320;
+
 
 		scale = sc;
 	}
@@ -63,26 +58,17 @@ public:
 		width = w;
 		scale = sc;
 	}
-	//void init() override
-	//{
-	//	xpos = 0;
-	//	ypos = 0;
-	//}
+
 	void init() override
 	{
-		//velocity.x = 0;
-		//velocity.y = 0;
+
 
 		velocity.Zero();
 	}
 
 	void update() override
 	{
-		//xpos++;
-		//ypos++;
-		/*#19 xoa dong nay*/
-		//position.x += velocity.x * speed;
-		//position.y += velocity.y * speed;
+
 		if (isMain) {
 			position.y += velocity.y;
 			position.x += velocity.x;

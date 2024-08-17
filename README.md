@@ -1,11 +1,10 @@
 # JumpIdol Game
 
 Sinh viên: Nguyễn Gia Duy
+
 MSV: 21021571
 
 Video youtube demo game: https://youtu.be/a7PdL-aVrXw
-
-
 
 # Giới thiệu Game
 

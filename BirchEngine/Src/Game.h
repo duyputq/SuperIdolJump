@@ -5,10 +5,7 @@
 #include <iostream>
 #include <vector>
 
-
-
 using namespace std;
-
 
 class ColliderComponent;
 
@@ -31,7 +28,6 @@ public:
 	/*kiem tra running*/
 	bool running() { return isRunning; }
 
-
 	/*ham render ra nhan vat*/
 	void render();
 
@@ -39,19 +35,13 @@ public:
 
 	void loadImage(const string& path, SDL_Renderer* renderer);
 
-
-
 /*bien su dung trong game.cpp*/
-	//static void AddTile(int id, int x, int y);
-	//static void AddTile(int srcX, int srcY, int xpos, int ypos);
 	static SDL_Renderer* renderer;
 	static SDL_Event event;
-	//static vector<ColliderComponent*> colliders;
 	bool isRunning;
 	bool isLiving;
 	bool noti_death;
 	bool noti_win;
-
 
 	enum groupLabels : size_t
 	{
@@ -60,11 +50,8 @@ public:
 		groupColliders,
 		groupSpikes,
 		groupPrincess
-		//groupEnemies,
 	};
 
 private:
-	int cnt = 0;
 	SDL_Window *window;
-	//SDL_Renderer *renderer;
 };

@@ -39,11 +39,7 @@ public:
 		bool isMoving = false;
 
 		//transform->isJumping = false;
-		if (keystates[SDL_SCANCODE_UP]) {
-			sprite->Play("Walk");
-			transform->velocity.y = -2.5f;
-			isMoving = true;
-		}
+
 		if (keystates[SDL_SCANCODE_LEFT]) {
 			sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
 
@@ -51,11 +47,7 @@ public:
 			isMoving = true;
 			initialDirection = LEFT;
 		}
-		if (keystates[SDL_SCANCODE_DOWN]) {
-			transform->velocity.y = 2.5f;
-			sprite->Play("Walk");
-			isMoving = true;
-		}
+
 
 		if (keystates[SDL_SCANCODE_RIGHT]) {
 			sprite->spriteFlip = SDL_FLIP_NONE;
@@ -78,7 +70,6 @@ public:
 			if (keystates[SDL_SCANCODE_LEFT]) {
 				transform->velocity.x = -3.0f;
 			}
-			//transform->velocity.x = 2.0f;
 
 
 			sprite->Play("Jump");

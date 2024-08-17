@@ -28,10 +28,6 @@ void GameObject::Update()
 	destRect.w = srcRect.w * 2;
 	destRect.h = srcRect.h * 2;
 
-	//cnt++;
-	//cout << cnt << endl;
-
-
 }
 
 void GameObject::Render()

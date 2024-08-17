@@ -15,5 +15,4 @@ private:
 
 	SDL_Rect srcRect, destRect;
 	SDL_Texture* objTexture;
-	//SDL_Renderer* renderer;	
 };

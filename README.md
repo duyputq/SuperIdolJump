@@ -1,6 +1,11 @@
 # JumpIdol Game
 
-Video youtube demo game: 
+Sinh viên: Nguyễn Gia Duy
+MSV: 21021571
+
+Video youtube demo game: https://youtu.be/a7PdL-aVrXw
+
+
 
 # Giới thiệu Game
 
@@ -8,15 +13,15 @@ Mỗi người trong chúng ta đều phải tìm được công chúa của cu�
 
 # Mục lục
 
-- [1. Bắt đầu game](#1-Bắt-đầu-game)
-- [2. Các thành phần trong game:](#2.Các-thành-phần-trong-game)
-- [3. Cách chơi](#3-cách-chơi)
-- [4. Hình ảnh trong game](#4-hình-ảnh-trong-game)
-- [5. Các kĩ thuật sử dụng](#5-các-kĩ-thuật-sử-dụng)
-- [6. Nguồn tham khảo](#6-nguồn-tham-khảo)
-- [7. Hướng phát triển](#7-hướng-phát-triển)
-- [8. Nhật ký, quá trình phát triển](#8-Nhật-ký-quá-trình-phát-triển)
-- [9. Lời kết](#9-Lời-kết)
+- [1. Bắt đầu game](#1bắt-đầu-game)
+- [2. Các thành phần trong game:](#2các-thành-phần-trong-game)
+- [3. Cách chơi](#3cấu-trúc-code)
+- [4. Hình ảnh trong game](#4cách-chơi--hình-ảnh-trong-game)
+- [5. Các kĩ thuật sử dụng](#5các-kỹ-thuật-sử-dụng)
+- [6. Nguồn tham khảo](#6nguồn-tham-khảo)
+- [7. Hướng phát triển](#7hướng-phát-triển)
+- [8. Nhật ký, quá trình phát triển](#8nhật-ký-quá-trình-phát-triển)
+- [9. Lời kết](#9lời-kết)
 
 
 # 1.Bắt đầu game
@@ -120,6 +125,7 @@ Thư mục Src gồm các source code:
 
 # 8.Nhật ký, quá trình phát triển
 Ý tưởng sơ khai ban đầu
+
 ![image](https://github.com/user-attachments/assets/70ef4679-051c-471a-9f80-e6600645b67f)
 
 Thêm phần đồ họa, ý tưởng chạm tới đích đến

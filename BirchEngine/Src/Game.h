@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class ColliderComponent;
+
 
 class Game
 {

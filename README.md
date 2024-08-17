@@ -15,6 +15,8 @@ Mỗi người trong chúng ta đều phải tìm được công chúa của cu�
 - [5. Các kĩ thuật sử dụng](#5-các-kĩ-thuật-sử-dụng)
 - [6. Nguồn tham khảo](#6-nguồn-tham-khảo)
 - [7. Hướng phát triển](#7-hướng-phát-triển)
+- [8. Nhật ký, quá trình phát triển](#8-Nhật-ký-quá-trình-phát-triển)
+- [9. Lời kết](#9-Lời-kết)
 
 
 # 1.Bắt đầu game
@@ -27,7 +29,7 @@ Người chơi sẽ bắt đầu tại màn 1. Game có 5 màn tất cả. Ngư�
 
 - Công chúa: ![princess](https://github.com/user-attachments/assets/823c5086-21c8-4ada-b96a-79ab14ba3138) công chúa mà ta cần giải cứu
 
-- Đất:![dat](https://github.com/user-attachments/assets/b30aa76b-016a-4a9e-b233-e41e9184d98c) những vật thể mà ta có thể đứng lên được, va chạm
+- Đất: ![dat](https://github.com/user-attachments/assets/b30aa76b-016a-4a9e-b233-e41e9184d98c) những vật thể mà ta có thể đứng lên được, va chạm
 
 - Nền: ![nen](https://github.com/user-attachments/assets/b4c4fda1-3ccd-4d44-a421-8fa3d44be8de)  các vật thể nền
 
